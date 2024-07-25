@@ -1,0 +1,94 @@
+/* General body styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: rgb(216, 225, 227); /* Background */
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Header styling */
+header {
+    background: #54c958;
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 1.2rem;
+    text-align: center;
+    border-bottom: 7px solid #388E3C; /* Slightly darker border */
+    box-shadow: 0 24px 18px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+/* Main content styling */
+main {
+    background: white;
+    border-radius: 4rem;
+    box-shadow: 0 14px 38px rgba(0, 0, 0, 0.2); /* Slight shadow */
+    padding: 2rem;
+    width: 80%;
+    max-width: 700px;
+    margin: 1rem;
+}
+
+/* Section styling */
+#poem-selection {
+    margin-bottom: 1rem;
+}
+
+/* Select element styling */
+#theme {
+    font-size: 1.1rem;
+    padding: 1.25rem 1rem;
+    border-radius: 8.5px;
+    border: 1px solid #ccc;
+    transition: border-color 0.3s ease; /* Smooth transition */
+}
+
+#theme:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
+/* Button styling */
+#refresh-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 1.25rem 1.5rem;
+    border-radius: 4.5px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition */
+    margin-top: 1rem;
+}
+
+#refresh-button:hover {
+    background-color: #3b893f; /* Darker green on hover */
+}
+
+#refresh-button:active {
+    transform: scale(0.95); /* Slight scale effect on click */
+}
+
+/* Poem display styling */
+#poem-display {
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 1.5rem;
+    transition: transform 0.3s ease;
+    background-color: #f9f9f9;
+    box-shadow: 10 7px 18px black; /* Subtle shadow */
+}
+
+/* Poem text styling */
+#poem {
+    white-space: pre-wrap; /* Ensures poem formatting is preserved */
+    font-size: 1.5rem;
+    line-height: 1.5;
+    color: #333;
+    font-family: cursive;
+    transition: color 0.5s ease; /* Smooth transition */
+}

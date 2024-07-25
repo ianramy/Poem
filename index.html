@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poem Generator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Poem Generator</h1>
+    </header>
+    <main>
+        <section id="poem-selection">
+            <label for="theme"></label>
+            <select id="theme">
+                <!-- Options will be populated by JavaScript -->
+            </select>
+            <button id="refresh-button">Generate New Poem</button>
+        </section>
+        <section id="poem-display">
+            <h2>Your Poem:</h2>
+            <pre id="poem"></pre>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
