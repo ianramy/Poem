@@ -1,3 +1,4 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,22 +8,68 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Header Section -->
     <header>
         <h1>Poem Generator</h1>
+        <p>Discover poems that inspire, calm, and bring joy.</p>
     </header>
+
+    <!-- Main Content -->
     <main>
+
+        <!-- How It Works Section -->
+        <section id="how-it-works">
+            <h2>How It Works</h2>
+            <div class="steps">
+                <div class="step">
+                    <h3>Select a Theme</h3>
+                    <p>Choose a theme that matches your mood or curiosity.</p>
+                </div>
+                <div class="step">
+                    <h3>Generate a Poem</h3>
+                    <p>Let the generator surprise you with a unique poem.</p>
+                </div>
+                <div class="step">
+                    <h3>Download and Share</h3>
+                    <p>Download your favorite poems and share them with loved ones.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Poem Selection Section -->
         <section id="poem-selection">
-            <label for="theme"></label>
+            <label for="theme">Select Theme:</label>
             <select id="theme">
-                <!-- Options will be populated by JavaScript -->
+                <!-- Options will be dynamically populated -->
             </select>
             <button id="refresh-button">Generate New Poem</button>
+            <button id="download-button">Download Poem</button>
         </section>
+
+        <!-- Poem Display Section -->
         <section id="poem-display">
             <h2>Your Poem:</h2>
-            <pre id="poem"></pre>
+            <div id="poem-container">
+                <pre id="poem">Select a theme to display your poem here.</pre>
+            </div>
+        </section>
+
+        <!-- Random Poems Section -->
+        <section id="poem-cards">
+            <h2>Random Poems</h2>
+            <div id="poem-cards-container">
+                <!-- Cards will be dynamically populated -->
+            </div>
         </section>
     </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>
+		Ian Ramy &copy; 2024. All rights reserved.
+		</p>
+    </footer>
+
     <script src="script.js"></script>
 </body>
 </html>

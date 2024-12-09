@@ -1,81 +1,147 @@
+// script.js
 // Function to fetch poem data from the JSON file
 async function loadPoemLines() {
     try {
-      const response = await fetch('poemLines.json'); // Fetch the JSON file
-      if (!response.ok) throw new Error('Network response was not ok');
-      return await response.json(); // Parse and return JSON data
+        const response = await fetch('poemLines.json');
+        if (!response.ok) throw new Error('Network response was not ok');
+        return await response.json();
     } catch (error) {
-      console.error('Error fetching the poem lines:', error);
-      return {}; // Return an empty object in case of error
+        console.error('Error fetching the poem lines:', error);
+        return {};
     }
-  }
-  
-  // Function to populate the theme dropdown
-  function populateThemeOptions(themes) {
+}
+
+// Function to populate the theme dropdown
+function populateThemeOptions(themes) {
     const themeSelect = document.getElementById('theme');
     for (const theme in themes) {
-      const option = document.createElement('option');
-      option.value = theme;
-      option.textContent = theme.charAt(0).toUpperCase() + theme.slice(1);
-      themeSelect.appendChild(option);
+        const option = document.createElement('option');
+        option.value = theme;
+        option.textContent = theme.charAt(0).toUpperCase() + theme.slice(1);
+        themeSelect.appendChild(option);
     }
-  }
-  
-  // Function to display the poem based on the selected theme
-  function displayPoem(poemLines, theme) {
+}
+
+// Function to display the poem based on the selected theme
+function displayPoem(poemLines, theme) {
     const poemElement = document.getElementById('poem');
     if (poemLines[theme] && poemLines[theme].length > 0) {
-      // Randomly select a line pair from the theme
-      const randomIndex = Math.floor(Math.random() * poemLines[theme].length);
-      const [line1] = poemLines[theme][randomIndex];
-      poemElement.textContent = `${line1}`;
+        const randomIndex = Math.floor(Math.random() * poemLines[theme].length);
+        const [line1] = poemLines[theme][randomIndex];
+        poemElement.textContent = `${line1}`;
     } else {
-      poemElement.textContent = 'No poems available. Please select a theme.';
+        poemElement.textContent = 'No poems available. Please select a theme.';
     }
-  }
-  
-  // Function to handle theme selection
-  function handleThemeChange(event) {
+}
+
+// Function to handle theme selection
+function handleThemeChange(event) {
     const theme = event.target.value;
-    if (!isPinned) {
-      displayPoem(poemLines, theme);
-    }
-  }
-  
-  // Function to handle refresh button click
-  function handleRefreshButtonClick() {
+    displayPoem(poemLines, theme);
+}
+
+// Function to handle refresh button click
+function handleRefreshButtonClick() {
     const themeSelect = document.getElementById('theme');
     const selectedTheme = themeSelect.value;
     if (selectedTheme) {
-      displayPoem(poemLines, selectedTheme);
+        displayPoem(poemLines, selectedTheme);
     }
-  }
-  
-  // Function to handle pin button click
-  function handlePinButtonClick() {
-    isPinned = !isPinned;
-    const pinButton = document.getElementById('pin-button');
-    pinButton.textContent = isPinned ? 'Unpin Poem' : 'Pin Poem';
-  }
-  
-  // Main function to initialize the page
-  let poemLines = {}; // Declare poemLines globally to access in handleThemeChange
-  let isPinned = false; // Track whether the poem is pinned
-  
-  async function init() {
-    poemLines = await loadPoemLines(); // Load poem lines from JSON
-    populateThemeOptions(poemLines); // Populate dropdown with themes
-  
-    // Event listener to update poem display when theme is changed
+}
+
+// Function to download the poem with a background
+function handleDownloadButtonClick() {
+    const poemContainer = document.getElementById('poem-container');
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    const width = poemContainer.offsetWidth;
+    const height = poemContainer.offsetHeight;
+    
+    canvas.width = width;
+    canvas.height = height;
+
+    context.fillStyle = '#f9f9f9';
+    context.fillRect(0, 0, width, height);
+
+    const text = document.getElementById('poem').textContent;
+    context.font = '20px Georgia';
+    context.fillStyle = '#333';
+    context.fillText(text, 20, 40);
+
+    const link = document.createElement('a');
+    link.download = 'poem.png';
+    link.href = canvas.toDataURL();
+    link.click();
+}
+
+// Function to generate random poem cards
+function generatePoemCards(poemLines) {
+    const container = document.getElementById('poem-cards-container');
+    container.innerHTML = ''; // Clear existing cards
+    const themes = Object.keys(poemLines);
+
+    for (let i = 0; i < 6; i++) {
+        const randomTheme = themes[Math.floor(Math.random() * themes.length)];
+        const randomIndex = Math.floor(Math.random() * poemLines[randomTheme].length);
+        const poemLine = poemLines[randomTheme][randomIndex][0];
+
+        // Create card
+        const card = document.createElement('div');
+        card.className = 'poem-card';
+
+        // Add content
+        const cardText = document.createElement('p');
+        cardText.textContent = `"${poemLine}"`;
+
+        const downloadButton = document.createElement('button');
+        downloadButton.textContent = 'Download';
+        downloadButton.addEventListener('click', () => downloadCard(poemLine));
+
+        card.appendChild(cardText);
+        card.appendChild(downloadButton);
+        container.appendChild(card);
+    }
+}
+
+// Function to download individual poem cards
+function downloadCard(poemText) {
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+
+    const width = 400;
+    const height = 200;
+
+    canvas.width = width;
+    canvas.height = height;
+
+    // Style for the card
+    context.fillStyle = '#f9f9f9';
+    context.fillRect(0, 0, width, height);
+
+    context.font = '16px Georgia';
+    context.fillStyle = '#333';
+    context.textAlign = 'center';
+    context.fillText(poemText, width / 2, height / 2);
+
+    const link = document.createElement('a');
+    link.download = 'poem-card.png';
+    link.href = canvas.toDataURL();
+    link.click();
+}
+
+// Main function to initialize the page
+let poemLines = {};
+async function init() {
+    poemLines = await loadPoemLines();
+    populateThemeOptions(poemLines);
+
     document.getElementById('theme').addEventListener('change', handleThemeChange);
-  
-    // Event listener for the refresh button
     document.getElementById('refresh-button').addEventListener('click', handleRefreshButtonClick);
-  
-    // Event listener for the pin button
-    document.getElementById('pin-button').addEventListener('click', handlePinButtonClick);
-  }
-  
-  // Initialize the page when the document is fully loaded
-  document.addEventListener('DOMContentLoaded', init);
-  
+    document.getElementById('download-button').addEventListener('click', handleDownloadButtonClick);
+
+    // Generate random poem cards
+    generatePoemCards(poemLines);
+}
+
+// Initialize the page
+document.addEventListener('DOMContentLoaded', init);
