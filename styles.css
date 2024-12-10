@@ -75,7 +75,16 @@ section {
 }
 
 button {
-    background: #2e2e2e;
+    background: black;
+    color: #ffffff;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+#download-button {
+    background: #02de02;
     color: #ffffff;
     padding: 0.8rem 1.5rem;
     border: none;
@@ -84,21 +93,27 @@ button {
     transition: all 0.3s ease;
 }
 
+#download-button:hover {
+    background: #109c00;
+}
+
 button:hover {
     background: #555;
 }
 
 /* Poem Display */
 #poem-container {
-    padding: 1.5rem;
-    background: #f9f9f9;
-    border: 1px dashed #d3d3d3;
+    background: #ffffff;
+    border: 1px solid #d3d3d3;
     border-radius: 8px;
-    font-family: 'Merriweather', serif;
-    font-size: 1.5rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
-    color: #2e2e2e;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
+
 
 /* How It Works Section */
 #how-it-works .steps {
@@ -128,7 +143,6 @@ button:hover {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 1rem;
-    font-family: 'Caveat', cursive;
 }
 
 .poem-card {
@@ -144,8 +158,8 @@ button:hover {
 }
 
 .poem-card p {
-    font-family: 'Caveat', cursive;
-    font-size: 1.2rem;
+    font-family: 'Merriweather', serif;
+    font-size: 1rem;
     margin-bottom: 1rem;
 }
 
@@ -180,8 +194,12 @@ footer {
     }
 
     #poem-container {
-        font-size: 1.1rem;
-        padding: 0.8rem;
+        font-size: 0.7rem;
+        padding: 1.2rem;
+        text-align: left;
+        overflow-wrap: break-word;
+        word-break: break-word;
+        box-sizing: border-box;
     }
 
     #theme {
@@ -213,8 +231,12 @@ footer {
     }
 
     #poem-container {
-        font-size: 1rem;
-        padding: 0.5rem;
+        font-size: 0.8rem;
+        padding: 1.2rem;
+        text-align: left;
+        overflow-wrap: break-word;
+        word-break: break-word;
+        box-sizing: border-box;
     }
 
     #theme, button {

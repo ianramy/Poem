@@ -29,8 +29,25 @@ function displayPoem(poemLines, theme) {
 
 	if (poemLines[theme] && poemLines[theme].length > 0) {
 		const randomIndex = Math.floor(Math.random() * poemLines[theme].length);
-		const [line1] = poemLines[theme][randomIndex];
-		poemElement.textContent = `${line1}`;
+		const poemText = poemLines[theme][randomIndex][0];
+
+		// Split the poem into two lines without breaking words
+		const maxChars = 40; // Adjust this for desired line length
+		const words = poemText.split(" "); // Split poem into words
+		let line1 = "";
+		let line2 = "";
+
+		// Construct line1 and line2 without exceeding maxChars
+		for (const word of words) {
+			if ((line1 + word).length <= maxChars) {
+				line1 += (line1.length > 0 ? " " : "") + word;
+			} else {
+				line2 += (line2.length > 0 ? " " : "") + word;
+			}
+		}
+
+		// Combine the two lines for display
+		poemElement.textContent = `${line1}\n${line2}`;
 		downloadButton.disabled = false;
 	} else {
 		poemElement.textContent = "No poems available. Please select a theme.";
@@ -55,88 +72,90 @@ function handleRefreshButtonClick() {
 
 // Function to download the poem with the selected background
 function handleDownloadButtonClick() {
-    const poemContainer = document.getElementById('poem-container');
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
+	const poemContainer = document.getElementById("poem-container");
+	const canvas = document.createElement("canvas");
+	const context = canvas.getContext("2d");
 
-    // Set canvas size to match container
-    const width = poemContainer.offsetWidth;
-    const height = poemContainer.offsetHeight;
-    canvas.width = width;
-    canvas.height = height;
+	// Set canvas size to match container
+	const width = Math.min(poemContainer.offsetWidth, 400);
+	const height = Math.max(poemContainer.offsetHeight, 200);
+	canvas.width = width;
+	canvas.height = height;
+	canvas.width = width;
+	canvas.height = height;
 
-    // Apply current background and text color
-    const isDarkMode = poemContainer.classList.contains('dark-mode');
-    context.fillStyle = isDarkMode ? '#333' : '#f9f9f9';
-    context.fillRect(0, 0, width, height);
+	// Apply current background and text color
+	const isDarkMode = poemContainer.classList.contains("dark-mode");
+	context.fillStyle = isDarkMode ? "#333" : "#f9f9f9";
+	context.fillRect(0, 0, width, height);
 
-    const text = document.getElementById('poem').textContent.trim();
-    const maxWidth = width * 0.8;
-    const lineHeight = 24;
-    const fontSize = 20;
-    context.font = `${fontSize}px Georgia`;
-    context.fillStyle = isDarkMode ? '#f9f9f9' : '#333';
-    context.textAlign = 'center';
+	const text = document.getElementById("poem").textContent.trim();
+	const maxWidth = width * 0.8;
+	const lineHeight = 24;
+	const fontSize = 14;
+	context.font = `${fontSize}px Georgia`;
+	context.fillStyle = isDarkMode ? "#f9f9f9" : "#333";
+	context.textAlign = "center";
 
-    // Function to calculate total text height
-    function calculateTextHeight(text, maxWidth, lineHeight) {
-        const words = text.split(' ');
-        let line = '';
-        let lineCount = 0;
+	// Function to calculate total text height
+	function calculateTextHeight(text, maxWidth, lineHeight) {
+		const words = text.split(" ");
+		let line = "";
+		let lineCount = 0;
 
-        words.forEach((word) => {
-            const testLine = line + word + ' ';
-            const testWidth = context.measureText(testLine).width;
+		words.forEach((word) => {
+			const testLine = line + word + " ";
+			const testWidth = context.measureText(testLine).width;
 
-            if (testWidth > maxWidth && line.length > 0) {
-                line = word + ' ';
-                lineCount++;
-            } else {
-                line = testLine;
-            }
-        });
+			if (testWidth > maxWidth && line.length > 0) {
+				line = word + " ";
+				lineCount++;
+			} else {
+				line = testLine;
+			}
+		});
 
-        if (line.length > 0) lineCount++;
-        return lineCount * lineHeight;
-    }
+		if (line.length > 0) lineCount++;
+		return lineCount * lineHeight;
+	}
 
-    // Function to wrap and draw text
-    function wrapText(text, x, y, maxWidth, lineHeight) {
-        const words = text.split(' ');
-        let line = '';
+	// Function to wrap and draw text
+	function wrapText(text, x, y, maxWidth, lineHeight) {
+		const words = text.split(" ");
+		let line = "";
 
-        words.forEach((word, index) => {
-            const testLine = line + word + ' ';
-            const testWidth = context.measureText(testLine).width;
+		words.forEach((word, index) => {
+			const testLine = line + word + " ";
+			const testWidth = context.measureText(testLine).width;
 
-            if (testWidth > maxWidth && line.length > 0) {
-                context.fillText(line.trim(), x, y);
-                line = word + ' ';
-                y += lineHeight;
-            } else {
-                line = testLine;
-            }
+			if (testWidth > maxWidth && line.length > 0) {
+				context.fillText(line.trim(), x, y);
+				line = word + " ";
+				y += lineHeight;
+			} else {
+				line = testLine;
+			}
 
-            if (index === words.length - 1) {
-                context.fillText(line.trim(), x, y);
-            }
-        });
-    }
+			if (index === words.length - 1) {
+				context.fillText(line.trim(), x, y);
+			}
+		});
+	}
 
-    // Calculate the total text height
-    const textHeight = calculateTextHeight(text, maxWidth, lineHeight);
+	// Calculate the total text height
+	const textHeight = calculateTextHeight(text, maxWidth, lineHeight);
 
-    // Determine the starting Y-coordinate to vertically center the text block
-    const startY = (height - textHeight) / 2;
+	// Determine the starting Y-coordinate to vertically center the text block
+	const startY = (height - textHeight) / 2;
 
-    // Draw the wrapped and centered text
-    wrapText(text, width / 2, startY, maxWidth, lineHeight);
+	// Draw the wrapped and centered text
+	wrapText(text, width / 2, startY, maxWidth, lineHeight);
 
-    // Create and trigger download
-    const link = document.createElement('a');
-    link.download = 'poem.png';
-    link.href = canvas.toDataURL();
-    link.click();
+	// Create and trigger download
+	const link = document.createElement("a");
+	link.download = "poem.png";
+	link.href = canvas.toDataURL();
+	link.click();
 }
 
 // Function to toggle between light and dark backgrounds
